@@ -22,3 +22,40 @@ header > img{
 header > h1{
     font-size: 2rem;
 }
+
+main {
+    padding: 30px 30px 10px;
+}
+
+
+.add-ingredient-form{
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    gap:10px;
+    margin-top: 20px;
+}
+.add-ingredient-form > input{
+    border-radius: 6px;
+    border: 1px solid #D1D5DB;
+    padding: 9px 13px;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+    flex-grow: 1;
+    min-width: 150px;
+    max-width:430px;
+}
+.add-ingredient-form > button{
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    font-size: 0.8rem;
+    border: none;
+    width: 80px;
+    flex-grow: 1;
+    max-width: 170px;
+    font-weight: 500;
+}
+.add-ingredient-form > button::before{
+    content:"+";
+    margin-right: 5px;
+}
