@@ -2,9 +2,11 @@ import React from 'react'
 export default function Main(){
     // const ingredients = ["chicken","vegnoodles","briyani"]
     const [ingredients,setIngredients] = React.useState([])
-    const ingredientListItems =ingredients.map(i=>(
+    const ingredientsListItems =ingredients.map(i=>(
         <li key={i}>{i}</li>
     ))
+
+
 
     function handleSubmit(event){
         event.preventDefault()
@@ -25,16 +27,30 @@ export default function Main(){
     return(
         <>
         <main>
-            <form onSubmit={handleSubmit} className="add-ingredient-form">
+            <form onSubmit={handleSubmit} className="add-ingredient-form" >
                 <input type="text"
                         placeholder="enter ingredient"
                         aria-label="Enter Recipe"
-                        name="ingredient" />
+                        name="ingredient"  required/>
                 <button >Add Ingredient</button>
             </form>
-            <ul>
-                {ingredientListItems}
-            </ul>
+            {ingredients.length>0 &&
+                                    <section>
+                                    <h2>Ingredients on hand:</h2>
+                                    <ul className="ingredients-list" aria-live="polite">
+                                        {ingredientsListItems}
+                                    </ul>
+                                    {ingredients.length>3 &&  
+                                                            <div className="get-recipe-container">
+                                                                <div>
+                                                                    <h3>Ready for a recipe?</h3>
+                                                                    <p>Generate a recipe from your list of ingredients.</p>
+                                                                </div>
+                                                                <button>Get a recipe</button>
+                                                            </div>
+                                    }
+                                </section>
+            }
         </main>
         
         </>
