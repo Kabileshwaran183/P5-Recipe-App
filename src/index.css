@@ -47,6 +47,7 @@ main > section > ul > li{
     justify-content: center;
     /* align-items: center; */
     gap:10px;
+    height: 40px;
     margin-top: 20px;
 }
 .add-ingredient-form > input{
@@ -75,12 +76,14 @@ main > section > ul > li{
 }
 .get-recipe-container{
     background-color: rgb(237, 218, 202);
-    padding: 1px 20px 1%;
     border-radius: 8px;
     font-size: 0.8rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap:20px;
+    padding : 5px 15px;
+
 }
 .get-recipe-container > button{
     border-radius: 10px;
@@ -91,5 +94,18 @@ main > section > ul > li{
     width: 100px;
     font-size: small;
     font-weight: 400;
+    flex-grow: 0.02;
+    height: 40px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode';
+}
+
+.suggested-recipe-container {
+    color: #475467;
+    line-height: 28px;
+    font-size: 1.125rem;
+    font-weight: 400;
+}
+
+.suggested-recipe-container ul li, .suggested-recipe-container ol li {
+    margin-bottom: 8px;
 }
