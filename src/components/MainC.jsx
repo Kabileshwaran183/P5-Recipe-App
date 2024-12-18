@@ -7,12 +7,20 @@ import { getRecipeFromMistral } from './ai';
 export default function Main() {
     const [ingredients, setIngredients] = React.useState([]);
     const [recipe, setRecipe] = React.useState("");
+    const [loading, setLoading] = React.useState(false); // New state for loading
 
     async function getRecipe() {
+        setLoading(true); // Set loading to true
+        try {
             const recipeMarkdown = await getRecipeFromMistral(ingredients);
             setRecipe(recipeMarkdown);
+        } catch (error) {
+            console.error("Error fetching recipe:", error);
+            setRecipe("Failed to fetch the recipe. Please try again.");
+        } finally {
+            setLoading(false); // Set loading to false when done
+        }
     }
-
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -35,7 +43,11 @@ export default function Main() {
             {ingredients.length > 0 && (
                 <IngredientForm ingredients={ingredients} getRecipe={getRecipe} />
             )}
-            {recipe && <RecipeSection recipe={recipe} />}
+             {loading ? ( // Show loading state
+                    <p>Loading recipe...</p>
+                ) : (
+                    recipe && <RecipeSection recipe={recipe} />
+                )}
 
         </main>
     );
