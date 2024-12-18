@@ -1,6 +1,6 @@
 import React from 'react';
-import RecipeSection from './recipeSection';
-import IngredientForm from './ingredientForm';
+import RecipeSection from './Recipe';
+import IngredientForm from './Ingredient';
 import { getRecipeFromMistral } from './ai';
 
 
