@@ -1,12 +1,14 @@
 import Header from "./components/Header"
-import Main from "./components/Main"
+import MainC from "./components/MainC"
 function App() {
   return (
     <>
       <Header />
-      <Main />
+      <MainC />
     </>
   )
 }
 
 export default App
+//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
+//access token  ^
