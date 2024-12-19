@@ -65,7 +65,7 @@ export default function Main() {
                             style={{ width: `${progress}%` }}
                         ></div>
                     </div>
-                    <p>Loading Recipe... {progress}%</p>
+                    <p>Preparing Recipe... {progress}%</p>
                 </div>
             ) : (
                 recipe && <RecipeSection recipe={recipe} />
