@@ -7,11 +7,23 @@ export default function Main() {
     const [ingredients, setIngredients] = React.useState([]);
     const [recipe, setRecipe] = React.useState("");
     const [loading, setLoading] = React.useState(false);
+    const [progress, setProgress] = React.useState(0);
 
     async function getRecipe() {
         setLoading(true);
+        setProgress(0);
         try {
+            const interval = setInterval(() => {
+                setProgress((prev) => {
+                    const newProgress = prev + 2.82;
+                    return newProgress < 90 ? parseFloat(newProgress.toFixed(2)) : 90;
+                });
+            }, 300);
+
             const recipeMarkdown = await getRecipeFromMistral(ingredients);
+
+            clearInterval(interval);
+            setProgress(100);
             setRecipe(recipeMarkdown);
         } catch (error) {
             console.error("Error fetching recipe:", error);
@@ -26,37 +38,34 @@ export default function Main() {
         const formEl = event.currentTarget;
         const formData = new FormData(formEl);
         const newIngredient = formData.get("ingredient");
-        if (newIngredient.trim()) {
-            setIngredients((prevIngredients) => [...prevIngredients, newIngredient.trim()]);
-        }
+        setIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
         formEl.reset();
     }
 
     return (
-        <main className="main-container">
-            {/* Ingredient Form */}
+        <main>
             <form onSubmit={handleSubmit} className="add-ingredient-form">
                 <input
                     type="text"
-                    placeholder="Enter ingredient (e.g., chicken)"
-                    aria-label="Enter Ingredient"
+                    placeholder="Enter ingredient"
+                    aria-label="Enter Recipe"
                     name="ingredient"
                     required
-                    className="ingredient-input"
                 />
-                <button className="add-button">Add Ingredient</button>
+                <button>Add Ingredient</button>
             </form>
-
-            {/* Ingredient List & Recipe Button */}
             {ingredients.length > 0 && (
                 <IngredientForm ingredients={ingredients} getRecipe={getRecipe} />
             )}
-
-            {/* Loading State or Recipe */}
             {loading ? (
                 <div className="loading-indicator">
-                    <div className="spinner"></div>
-                    <p className="loading-text">Fetching your recipe...</p>
+                    <div className="progress-bar">
+                        <div
+                            className="progress-bar-fill"
+                            style={{ width: `${progress}%` }}
+                        ></div>
+                    </div>
+                    <p>Loading Recipe... {progress}%</p>
                 </div>
             ) : (
                 recipe && <RecipeSection recipe={recipe} />
