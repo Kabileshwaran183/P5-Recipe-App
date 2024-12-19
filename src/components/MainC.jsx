@@ -3,14 +3,13 @@ import RecipeSection from './Recipe';
 import IngredientForm from './Ingredient';
 import { getRecipeFromMistral } from './ai';
 
-
 export default function Main() {
     const [ingredients, setIngredients] = React.useState([]);
     const [recipe, setRecipe] = React.useState("");
-    const [loading, setLoading] = React.useState(false); // New state for loading
+    const [loading, setLoading] = React.useState(false);
 
     async function getRecipe() {
-        setLoading(true); // Set loading to true
+        setLoading(true);
         try {
             const recipeMarkdown = await getRecipeFromMistral(ingredients);
             setRecipe(recipeMarkdown);
@@ -18,7 +17,7 @@ export default function Main() {
             console.error("Error fetching recipe:", error);
             setRecipe("Failed to fetch the recipe. Please try again.");
         } finally {
-            setLoading(false); // Set loading to false when done
+            setLoading(false);
         }
     }
 
@@ -27,28 +26,41 @@ export default function Main() {
         const formEl = event.currentTarget;
         const formData = new FormData(formEl);
         const newIngredient = formData.get("ingredient");
-        setIngredients(prevIngredients => [...prevIngredients, newIngredient]);
+        if (newIngredient.trim()) {
+            setIngredients((prevIngredients) => [...prevIngredients, newIngredient.trim()]);
+        }
         formEl.reset();
     }
 
     return (
-        <main>
+        <main className="main-container">
+            {/* Ingredient Form */}
             <form onSubmit={handleSubmit} className="add-ingredient-form">
-                <input type="text"
-                    placeholder="enter ingredient"
-                    aria-label="Enter Recipe"
-                    name="ingredient" required />
-                <button >Add Ingredient</button>
+                <input
+                    type="text"
+                    placeholder="Enter ingredient (e.g., chicken)"
+                    aria-label="Enter Ingredient"
+                    name="ingredient"
+                    required
+                    className="ingredient-input"
+                />
+                <button className="add-button">Add Ingredient</button>
             </form>
+
+            {/* Ingredient List & Recipe Button */}
             {ingredients.length > 0 && (
                 <IngredientForm ingredients={ingredients} getRecipe={getRecipe} />
             )}
-             {loading ? ( // Show loading state
-                    <p>Loading recipe...</p>
-                ) : (
-                    recipe && <RecipeSection recipe={recipe} />
-                )}
 
+            {/* Loading State or Recipe */}
+            {loading ? (
+                <div className="loading-indicator">
+                    <div className="spinner"></div>
+                    <p className="loading-text">Fetching your recipe...</p>
+                </div>
+            ) : (
+                recipe && <RecipeSection recipe={recipe} />
+            )}
         </main>
     );
 }
