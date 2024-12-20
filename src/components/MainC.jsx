@@ -8,7 +8,18 @@ export default function Main() {
     const [recipe, setRecipe] = React.useState("");
     const [loading, setLoading] = React.useState(false);
     const [progress, setProgress] = React.useState(0);
-
+    const recipeSection = React.useRef(null); // Ref to scroll to
+    const loadingSectiion = React.useRef(null); 
+    React.useEffect(() => {
+        if (recipe !== "" && recipeSection.current !== null) {
+            recipeSection.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [recipe]); // This effect runs when the `recipe` is updated
+    React.useEffect(() => {
+        if (loading) {
+            loadingSectiion.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [loading]);
     async function getRecipe() {
         setLoading(true);
         setProgress(0);
@@ -57,9 +68,10 @@ export default function Main() {
             {ingredients.length > 0 && (
                 <IngredientForm ingredients={ingredients} getRecipe={getRecipe} />
             )}
+
             {loading ? (
                 <div className="loading-indicator">
-                    <div className="progress-bar">
+                    <div className="progress-bar" ref={loadingSectiion}>
                         <div
                             className="progress-bar-fill"
                             style={{ width: `${progress}%` }}
@@ -68,7 +80,11 @@ export default function Main() {
                     <p>Preparing Recipe... {progress}%</p>
                 </div>
             ) : (
-                recipe && <RecipeSection recipe={recipe} />
+                recipe && (
+                    <div ref={recipeSection}>
+                        <RecipeSection recipe={recipe} />
+                    </div>
+                )
             )}
         </main>
     );
